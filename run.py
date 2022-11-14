@@ -9,7 +9,7 @@ TOKEN_FILE = open("./asset/token/token.txt", 'r')
 TOKEN      = TOKEN_FILE.readline()
 TOKEN_FILE.close()
 
-bot = commands.Bot(command_prefix = '!', help_command=None)
+bot = commands.Bot(command_prefix = '!', help_command=None, intents=discord.Intents.all())
 
 ##########################################################
 
