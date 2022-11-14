@@ -1,0 +1,2 @@
+change this file's name as "token.txt"
+and enter your token if you're really going to use.
