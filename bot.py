@@ -75,7 +75,7 @@ async def ping(ctx, *args):
         ping_result = send_ping(args[0])
         if ping_result == "illegal input for ping":
             # illegal input
-            await ctx.reply(f"`ping` 명령어를 위한 인수가 적절하지 않습니다. (도움말 참조)")
+            await ctx.reply(f"`ping` 명령어를 위한 인수가 적절하지 않은 것 같아요. (도움말 참조)")
         else:
             embed = discord.Embed(title = f"`ping` 보내기", color = 0x00FFDB)
             embed.add_field(name = "목적지", value = f"`{args[0]}`", inline = False)
@@ -83,6 +83,7 @@ async def ping(ctx, *args):
             embed.add_field(name = "RTT", value = f"**평균** : {ping_result['rtt_avg_ms']}ms, **최대** : {ping_result['rtt_max_ms']}ms, **최소** : {ping_result['rtt_min_ms']}ms")
             embed.set_footer(text = "IP주소나 URL로 ping을 시도할 수 있어요.")
             await ctx.reply(embed = embed)
+        
 
 @bot.command(name = "time")
 async def get_time(ctx):
@@ -92,6 +93,36 @@ async def get_time(ctx):
                         color = 0x00FFDB)
     embed.set_footer(text = "한국표준시(KST) 기준")
     await ctx.reply(embed = embed)
+
+
+@bot.command(name = "voice_channel")
+async def voice_channel(ctx, *args):
+    # voice_channel [args...]
+    if not args:
+        #no input
+        await ctx.reply(f"`voice_channel` 명령어를 위한 제대로 된 인수가 주어지지 않은 것 같아요. (도움말 참조)")
+    else:
+        # voice_channel join
+        if args[0] == "join" and len(args) == 1:
+            if ctx.author.voice is None:
+                await ctx.reply("먼저 음성 채널에 들어가서 다시 저를 호출해 주세요.")
+            else:
+                voice_channel = ctx.author.voice.channel
+                if ctx.voice_client is None:
+                    await voice_channel.connect()
+                    voice_channel = ctx.author.voice.channel                        # refresh variable
+                    await ctx.reply(f"음성 채널(`{voice_channel}`)에 들어갔어요.")
+                else:
+                    await ctx.voice_client.move_to(voice_channel)
+                    await ctx.reply(f"음성 채널(`{voice_channel}`)로 이동했어요.")
+        # voice channel leave
+        elif args[0] == "leave" and len(args) == 1:
+            if ctx.voice_client:
+                await ctx.guild.voice_client.disconnect()
+                await ctx.reply(f"음성 채널에서 나왔어요.")
+            else:
+                await ctx.reply(f"저는 아직 음성채널에 있지 않아요.")
+
 
 @bot.event
 async def on_command_error(ctx, error):

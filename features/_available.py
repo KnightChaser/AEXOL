@@ -24,4 +24,9 @@ supported_commands = {
         "usage"       : "axl! ping [target_ip_address|target_url]",
         "privilege"   : "everone"
     },
+    "!voice_channel"  : {
+        "description" : "봇을 음성 채널에 초대시키거나 나가도록 합니다. 이때, 초대하기 전 먼저 원하는 음성 채널에 사용자가 위치해야 합니다. 나갈 때는 음성 채널에 꼭 있지 않아도 됩니다.",
+        "usage"       : "axl! voice_channel [join|leave]",
+        "privilege"   : "everone"
+    },
 }

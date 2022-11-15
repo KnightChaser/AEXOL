@@ -23,3 +23,5 @@ asset/token/token.txt
 #unnecessary
 features/__pycache__/
 log/
+legacy/
+*.exe
