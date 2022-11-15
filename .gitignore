@@ -20,5 +20,6 @@
 #for security
 asset/token/token.txt
 
-#unnecessary pyc files
+#unnecessary
 features/__pycache__/
+log/
