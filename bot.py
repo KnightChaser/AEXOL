@@ -51,7 +51,7 @@ async def help(ctx, *args):
         embed.add_field(name = "특정 명령어 자세하게 알아보기", value = f"`!help [command]`\n(`[command]`에서 명령어 앞의 axl!는 붙이지 마세요.)", inline = False)
         await ctx.reply(embed = embed)
     elif len(args) == 1:
-        request = "!" + args[0]
+        request = args[0]
         if request in _available.supported_commands:
             detailed_guide              = _available.supported_commands[request]
             detailed_guide_description  = detailed_guide["description"]
@@ -64,7 +64,7 @@ async def help(ctx, *args):
             embed.set_footer(text = "명령어 권한이 administrator인 경우 권한이 있는 관리자만 실행할 수 있어요.")
             await ctx.reply(embed = embed)
     else:
-        await ctx.reply(f"명령어 형식이 올바르지 않은 것 같아요. (`axl! help [args...]`)")
+        await ctx.reply(f"명령어 형식이 올바르지 않은 것 같아요. (`axl! help [command]`)")
 
 @bot.command(name = "ping")
 async def ping(ctx, *args):
