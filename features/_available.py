@@ -19,9 +19,9 @@ supported_commands = {
         "usage"       : "axl! help [command(without \"!\")]",
         "privilege"   : "everyone"
     },
-    # "!ping"           : {
-    #     "description" : "네트워크 연결 상태를 확인합니다.",
-    #     "usage"       : "axl! ping [target_ip|target_address]",
-    #     "privilege"   : "everone"
-    # },
+    "!ping"           : {
+        "description" : "원하는 타겟의 네트워크 연결 상태를 확인합니다. (ICMP ECHO/REPLY)",
+        "usage"       : "axl! ping [target_ip_address|target_url]",
+        "privilege"   : "everone"
+    },
 }

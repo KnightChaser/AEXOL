@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from features import _available
 from features.get_time import *
+from features.send_ping import *
 
 ##########################################################
 
@@ -18,15 +19,6 @@ async def on_ready():
     print(f'logged in as {bot.user}')
 
 ##########################################################
-
-@bot.command(name = "time")
-async def get_time(ctx):
-    current_time = get_current_formatted_time_string()
-    embed = discord.Embed(title = "현재 시간", 
-                        description = f"{current_time}", 
-                        color = 0x00FFDB)
-    embed.set_footer(text = "한국표준시(KST) 기준")
-    await ctx.reply(embed = embed)
 
 @bot.command(name = "change_status")
 @commands.is_owner()
@@ -74,6 +66,32 @@ async def help(ctx, *args):
     else:
         await ctx.reply(f"명령어 형식이 올바르지 않은 것 같아요. (`axl! help [args...]`)")
 
+@bot.command(name = "ping")
+async def ping(ctx, *args):
+    if not args:
+        # no input
+        await ctx.reply(f"`ping` 명령어를 위한 제대로 된 인수가 주어지지 않은 것 같아요. (도움말 참조)")
+    else:
+        ping_result = send_ping(args[0])
+        if ping_result == "illegal input for ping":
+            # illegal input
+            await ctx.reply(f"`ping` 명령어를 위한 인수가 적절하지 않습니다. (도움말 참조)")
+        else:
+            embed = discord.Embed(title = f"`ping` 보내기", color = 0x00FFDB)
+            embed.add_field(name = "목적지", value = f"`{args[0]}`", inline = False)
+            embed.add_field(name = "결과", value = f"**{ping_result['message']}** ({ping_result['success_ratio_percentage']}%)", inline = False)
+            embed.add_field(name = "RTT", value = f"**평균** : {ping_result['rtt_avg_ms']}ms, **최대** : {ping_result['rtt_max_ms']}ms, **최소** : {ping_result['rtt_min_ms']}ms")
+            embed.set_footer(text = "IP주소나 URL로 ping을 시도할 수 있어요.")
+            await ctx.reply(embed = embed)
+
+@bot.command(name = "time")
+async def get_time(ctx):
+    current_time = get_current_formatted_time_string()
+    embed = discord.Embed(title = "현재 시간", 
+                        description = f"{current_time}", 
+                        color = 0x00FFDB)
+    embed.set_footer(text = "한국표준시(KST) 기준")
+    await ctx.reply(embed = embed)
 
 @bot.event
 async def on_command_error(ctx, error):
