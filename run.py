@@ -9,7 +9,7 @@ TOKEN_FILE = open("./asset/token/token.txt", 'r')
 TOKEN      = TOKEN_FILE.readline()
 TOKEN_FILE.close()
 
-bot = commands.Bot(command_prefix = '!', help_command=None, intents=discord.Intents.all())
+bot = commands.Bot(command_prefix = 'axl! ', help_command=None, intents=discord.Intents.all())
 
 ##########################################################
 
@@ -55,7 +55,8 @@ async def help(ctx, *args):
             available_commands_list += f"`{_dataline}` "
         embed = discord.Embed(title = "명령어 도움말", color = 0xE4F9F5)
         embed.add_field(name = "사용 가능한 명령어", value = f"{available_commands_list}", inline = False)
-        embed.add_field(name = "특정 명령어 자세하게 알아보기", value = f"`!help [command]`\n(`[command]`에서 명령어 앞의 !는 붙이지 마세요.)", inline = False)
+        embed.add_field(name = "공통 명령어 형식(prefix)", value = f"`axl! [command] [args...]`", inline = False)
+        embed.add_field(name = "특정 명령어 자세하게 알아보기", value = f"`!help [command]`\n(`[command]`에서 명령어 앞의 axl!는 붙이지 마세요.)", inline = False)
         await ctx.reply(embed = embed)
     elif len(args) == 1:
         request = "!" + args[0]
@@ -71,7 +72,7 @@ async def help(ctx, *args):
             embed.set_footer(text = "명령어 권한이 administrator인 경우 권한이 있는 관리자만 실행할 수 있어요.")
             await ctx.reply(embed = embed)
     else:
-        await ctx.reply(f"명령어 형식이 올바르지 않은 것 같아요. (`!help`)")
+        await ctx.reply(f"명령어 형식이 올바르지 않은 것 같아요. (`axl! help [args...]`)")
 
 
 @bot.event
