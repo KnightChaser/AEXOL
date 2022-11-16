@@ -103,10 +103,10 @@ async def voice_channel(ctx, *args):
         # voice_channel leave
         elif args[0] == "leave" and len(args) == 1:
             await leave_voice_channel(ctx)
-        # voice_channel play [youtube_url]
-        elif args[0] == "play" and validators.url(args[1]) and len(args) == 2:
+        # voice_channel playlist add [youtube_url]
+        elif args[0] == "playlist" and args[1] == "add" and validators.url(args[2]) and len(args) == 3:
             try:
-                requested_url = args[1]
+                requested_url = args[2]
                 await add_queue(ctx, server_id, requested_url)
             except IndexError:
                 # the bot doesn't seems to be connected

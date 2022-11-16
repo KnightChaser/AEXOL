@@ -32,8 +32,11 @@ async def add_queue(ctx, server_id, requested_url):
     if server_id not in music_queues.keys():
         # create music queues for the servers without current music queue
         music_queues[server_id] = []
-        await ctx.reply("이 서버에서 사용되는 음악 플레이리스트가 없어서 하나 만들었어요.")
+        await ctx.send("이 서버에서 사용되는 음악 플레이리스트가 없어서 하나 만들었어요.")
     music_queues[server_id].append(video_information)
+
+    video_length_hhmmss    = str(datetime.timedelta(seconds = video_information['video_duration']))
+    await ctx.send(f"💽 **{video_information['video_title']}**를 플레이리스트에 추가했어요. (재생 시간 : {video_length_hhmmss})")
 
 
 async def show_queue(ctx, server_id):
