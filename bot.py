@@ -3,6 +3,10 @@ from discord.ext import commands
 from features import _available
 from features.get_time import *
 from features.send_ping import *
+from features.voice_channel import *
+
+import sys
+sys.path.append("./features/voice")
 
 ##########################################################
 
@@ -39,6 +43,7 @@ async def change_status(ctx, *args):
 async def hello(ctx):
     await ctx.reply(f"반가워요! **{ctx.author.name}**님! 저는 **{bot.user}** 입니다!")
 
+
 @bot.command(name = "help")
 async def help(ctx, *args):
     if not args:
@@ -65,6 +70,7 @@ async def help(ctx, *args):
             await ctx.reply(embed = embed)
     else:
         await ctx.reply(f"명령어 형식이 올바르지 않은 것 같아요. (`axl! help [command]`)")
+
 
 @bot.command(name = "ping")
 async def ping(ctx, *args):
@@ -104,24 +110,11 @@ async def voice_channel(ctx, *args):
     else:
         # voice_channel join
         if args[0] == "join" and len(args) == 1:
-            if ctx.author.voice is None:
-                await ctx.reply("먼저 음성 채널에 들어가서 다시 저를 호출해 주세요.")
-            else:
-                voice_channel = ctx.author.voice.channel
-                if ctx.voice_client is None:
-                    await voice_channel.connect()
-                    voice_channel = ctx.author.voice.channel                        # refresh variable
-                    await ctx.reply(f"음성 채널(`{voice_channel}`)에 들어갔어요.")
-                else:
-                    await ctx.voice_client.move_to(voice_channel)
-                    await ctx.reply(f"음성 채널(`{voice_channel}`)로 이동했어요.")
+            # await voice.join_voice_channel(ctx)
+            await join_voice_channel(ctx)
         # voice channel leave
         elif args[0] == "leave" and len(args) == 1:
-            if ctx.voice_client:
-                await ctx.guild.voice_client.disconnect()
-                await ctx.reply(f"음성 채널에서 나왔어요.")
-            else:
-                await ctx.reply(f"저는 아직 음성채널에 있지 않아요.")
+            await leave_voice_channel(ctx)
 
 
 @bot.event
