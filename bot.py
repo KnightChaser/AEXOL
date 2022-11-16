@@ -74,21 +74,11 @@ async def help(ctx, *args):
 
 @bot.command(name = "ping")
 async def ping(ctx, *args):
-    if not args:
+    if not args or len(args) != 1:
         # no input
         await ctx.reply(f"`ping` 명령어를 위한 제대로 된 인수가 주어지지 않은 것 같아요. (도움말 참조)")
     else:
-        ping_result = send_ping(args[0])
-        if ping_result == "illegal input for ping":
-            # illegal input
-            await ctx.reply(f"`ping` 명령어를 위한 인수가 적절하지 않은 것 같아요. (도움말 참조)")
-        else:
-            embed = discord.Embed(title = f"`ping` 보내기", color = 0x00FFDB)
-            embed.add_field(name = "목적지", value = f"`{args[0]}`", inline = False)
-            embed.add_field(name = "결과", value = f"**{ping_result['message']}** ({ping_result['success_ratio_percentage']}%)", inline = False)
-            embed.add_field(name = "RTT", value = f"**평균** : {ping_result['rtt_avg_ms']}ms, **최대** : {ping_result['rtt_max_ms']}ms, **최소** : {ping_result['rtt_min_ms']}ms")
-            embed.set_footer(text = "IP주소나 URL로 ping을 시도할 수 있어요.")
-            await ctx.reply(embed = embed)
+        await send_ping(ctx, args[0])
         
 
 @bot.command(name = "time")

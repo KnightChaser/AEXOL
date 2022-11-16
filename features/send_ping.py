@@ -1,7 +1,7 @@
 from pythonping import ping
+import discord
 
-
-def send_ping(target):
+async def send_ping(ctx, target):
     request_qty = 5
     try:
 
@@ -16,6 +16,7 @@ def send_ping(target):
             message = "실패(Failed)"
 
         result = {
+            "target"                    : target,
             "rtt_avg_ms"                : response_list.rtt_avg_ms,
             "rtt_max_ms"                : response_list.rtt_max_ms,
             "rtt_min_ms"                : response_list.rtt_min_ms,
@@ -28,4 +29,20 @@ def send_ping(target):
         # illegal input detected
         result = "illegal input for ping"
     finally:
-        return result
+        # return result
+        # just relay the value ctx to execute next function send_ping_result that uses Discord.py functions
+        await send_ping_result(ctx, result)
+
+async def send_ping_result(ctx, result):
+    # ping_result = send_ping(args[0])
+    ping_result = result
+    if ping_result == "illegal input for ping":
+        # illegal input
+        await ctx.reply(f"`ping` 명령어를 위한 인수가 적절하지 않은 것 같아요. (도움말 참조)")
+    else:
+        embed = discord.Embed(title = f"`ping` 보내기", color = 0x00FFDB)
+        embed.add_field(name = "목적지", value = f"`{result['target']}`", inline = False)
+        embed.add_field(name = "결과", value = f"**{ping_result['message']}** ({ping_result['success_ratio_percentage']}%)", inline = False)
+        embed.add_field(name = "RTT", value = f"**평균** : {ping_result['rtt_avg_ms']}ms, **최대** : {ping_result['rtt_max_ms']}ms, **최소** : {ping_result['rtt_min_ms']}ms")
+        embed.set_footer(text = "IP주소나 URL로 ping을 시도할 수 있어요.")
+        await ctx.reply(embed = embed)
