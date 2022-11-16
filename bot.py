@@ -6,7 +6,6 @@ from features.help import *
 from features.play_music import *
 from features.send_ping import *
 from features.voice_channel import *
-import youtube_dl
 import validators
 
 import sys
