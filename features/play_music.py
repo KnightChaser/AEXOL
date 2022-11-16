@@ -64,6 +64,10 @@ async def show_queue(ctx, server_id):
                 index_number           = '{0: >4}'.format(index)
                 video_length_hhmmss    = str(datetime.timedelta(seconds = music_info['video_duration']))
                 local_playlist_string += f"#{index_number} : {music_info['video_title']} ({video_length_hhmmss})\n"
+
+        if local_playlist_string == "":
+            local_playlist_string = "아직 아무것도 없어요..."           # <--- playlist exists but nothing inside
+
     except KeyError:
         # if there is nothing on music_queues(0 items) and someone tries to show the playlist at that moment,
         # the keyerror will be occured because the key is NOT vaild for the playlist WITH NOTHING.
