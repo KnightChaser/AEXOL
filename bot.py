@@ -4,6 +4,9 @@ from features import _available
 from features.get_time import *
 from features.send_ping import *
 from features.voice_channel import *
+from features.play_music import *
+import youtube_dl
+import validators
 
 import sys
 sys.path.append("./features/voice")
@@ -85,9 +88,9 @@ async def ping(ctx, *args):
 async def get_time(ctx):
     await send_current_formatted_time(ctx)
 
-
 @bot.command(name = "voice_channel")
 async def voice_channel(ctx, *args):
+    server_id      = ctx.guild.id
     # voice_channel [args...]
     if not args:
         #no input
@@ -97,9 +100,24 @@ async def voice_channel(ctx, *args):
         if args[0] == "join" and len(args) == 1:
             # await voice.join_voice_channel(ctx)
             await join_voice_channel(ctx)
-        # voice channel leave
+        # voice_channel leave
         elif args[0] == "leave" and len(args) == 1:
             await leave_voice_channel(ctx)
+        # voice_channel play [youtube_url]
+        elif args[0] == "play" and validators.url(args[1]) and len(args) == 2:
+            try:
+                requested_url = args[1]
+                await add_queue(ctx, server_id, requested_url)
+            except IndexError:
+                # the bot doesn't seems to be connected
+                await ctx.reply("음성채널에 아직 있는 것 같지 않아요. 저를 음성채널에 먼저 들여보내 주세요!")
+            except:
+                await ctx.reply("올바른 요청 형식이 아니어서 오류가 발생한 것 같아요. (중복 재생 시도, 처리 오류, 인터넷 연결 불안정 / 도움말 참조)")
+        # voice_channel playlist show
+        elif args[0] == "playlist" and args[1] == "show" and len(args) == 2:
+            await show_queue(ctx, server_id)
+        else:
+            await ctx.reply(f"`voice_channel` 명령어를 위한 제대로 된 인수가 주어지지 않은 것 같아요. (도움말 참조)")
 
 
 @bot.event
