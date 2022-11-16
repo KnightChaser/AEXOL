@@ -111,7 +111,7 @@ async def play_queue(ctx, server_id):
         return
 
     ffmpeg_options = {
-        'options': '-vn', 
+        'options': '-vn -preset veryfast', 
         "before_options": "-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5"
     }
 
