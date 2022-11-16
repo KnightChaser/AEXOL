@@ -24,9 +24,7 @@ async def get_help(ctx, *args):
             embed.add_field(name = "명령어 설명", value = f"{detailed_guide_description}", inline = False)
             embed.add_field(name = "명령어 형식", value = f"`{detailed_guide_usage}`", inline = False)
             embed.add_field(name = "명령어 권한", value = f"`{detailed_guide_privilege}`", inline = False)
-
-            print(detailed_guide)
-
+            
             if "detailed_descriptions" in detailed_guide:
                 for _seq in range(len(detailed_guide["detailed_descriptions"])):
                     detailed_descriptions_title     = detailed_guide["detailed_descriptions"][_seq]["title"]
