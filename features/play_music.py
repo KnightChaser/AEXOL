@@ -36,7 +36,7 @@ async def add_queue(ctx, server_id, requested_url):
     music_queues[server_id].append(video_information)
 
     video_length_hhmmss    = str(datetime.timedelta(seconds = video_information['video_duration']))
-    await ctx.send(f"💽 **{video_information['video_title']}**를 플레이리스트에 추가했어요. (재생 시간 : {video_length_hhmmss})")
+    await ctx.send(f"💽 [**{video_information['video_title']}**]를 플레이리스트에 추가했어요. (재생 시간 : {video_length_hhmmss})")
 
 
 async def show_queue(ctx, server_id):
