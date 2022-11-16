@@ -8,6 +8,15 @@ music_queues = {}
 
 async def add_queue(ctx, server_id, requested_url):
 
+    # playlist_detector_in_url = ['&start_radio', '&list', '&index']
+    allowable_youtube_link_detector = ['https://www.youtube.com/watch?v=', 'https://youtu.be/']
+    if not requested_url.startswith(tuple(allowable_youtube_link_detector)) or "&start_radio" in requested_url or "&list" in requested_url or "&index" in requested_url:
+        # when user gives playlist or station link of Youtube to play via this bot,
+        # ffmpeg that is belonged to this tries to download everything in ths playlist so the task consumes so much time
+        # and that's unexpected. so URL for playlist and station is blocked by these techincal issues.
+        await ctx.reply(f"죄송해요! YouTube 영상 링크는 반드시 `https://www.youtube.com/watch?v=` 또는 `https://youtu.be/`로 시작해야 하며 YouTube Station 또는 플레이리스트 링크는 기술상 제약으로 인해 허용되지 않습니다.")
+        return
+
     # check whether requested url is for available Youtube Video
     try:
         with youtube_dl.YoutubeDL() as ydl:
