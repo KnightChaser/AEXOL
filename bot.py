@@ -108,14 +108,25 @@ async def voice_channel(ctx, *args):
             try:
                 requested_url = args[2]
                 await add_queue(ctx, server_id, requested_url)
-            except IndexError:
-                # the bot doesn't seems to be connected
-                await ctx.reply("음성채널에 아직 있는 것 같지 않아요. 저를 음성채널에 먼저 들여보내 주세요!")
+            # except IndexError:
+            #     # the bot doesn't seems to be connected
+            #     await ctx.reply("음성채널에 아직 있는 것 같지 않아요. 저를 음성채널에 먼저 들여보내 주세요!")
             except:
                 await ctx.reply("올바른 요청 형식이 아니어서 오류가 발생한 것 같아요. (중복 재생 시도, 처리 오류, 인터넷 연결 불안정 / 도움말 참조)")
         # voice_channel playlist show
         elif args[0] == "playlist" and args[1] == "show" and len(args) == 2:
             await show_queue(ctx, server_id)
+        # voice_channel playlist delete [index]
+        elif args[0] == "playlist" and args[1] == "delete" and len(args) == 3:
+            index = args[2]
+            if index == "*":                    # delete everything
+                pass
+            else:
+                try:
+                    index = int(args[2])        # delete something (designate by index number of the list)
+                except ValueError:
+                    return
+            await delete_element_in_queue(ctx, server_id, index)
         else:
             await ctx.reply(f"`voice_channel` 명령어를 위한 제대로 된 인수가 주어지지 않은 것 같아요. (도움말 참조)")
 

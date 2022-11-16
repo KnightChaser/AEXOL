@@ -64,3 +64,19 @@ async def show_queue(ctx, server_id):
     embed.add_field(name = f"현재 서버 : {server_name}", value = f"```{local_playlist_string}```", inline = False)
 
     await ctx.reply(embed = embed)
+
+async def delete_element_in_queue(ctx, server_id, index):
+    global music_queues
+    
+    # A user requests to delete everything in the current queue
+    if index == "*":
+        music_queues[server_id] = []
+        await ctx.reply("재생목록에 있는 내용을 모두 지웠어요.")
+    else:
+        try:
+            target_title = music_queues[server_id][index]['video_title']
+            music_queues[server_id].pop(index)
+
+            await ctx.reply(f"[#{index}] **\"{target_title}\"**을 재생목록에서 삭제했어요.")
+        except IndexError:
+            await ctx.reply("요청하신 번호에 해당하는 내용이 재생목록에 없어요. 한번 다시 확인해주세요!")
