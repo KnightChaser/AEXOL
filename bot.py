@@ -46,7 +46,6 @@ async def change_status(ctx, *args):
 async def hello(ctx):
     await ctx.reply(f"반가워요! **{ctx.author.name}**님! 저는 **{bot.user}** 입니다!")
 
-
 @bot.command(name = "help")
 async def help(ctx, *args):
     if not args:
@@ -126,7 +125,19 @@ async def voice_channel(ctx, *args):
                     index = int(args[2])        # delete something (designate by index number of the list)
                 except ValueError:
                     return
-            await delete_element_in_queue(ctx, server_id, index)
+            await delete_element_in_queue(ctx, server_id, index, True)
+        # voice_channel playlist play
+        elif args[0] == "playlist" and args[1] == "play" and len(args) == 2:
+            await play_queue(ctx, server_id)
+        # voice_channel playlist pause
+        elif args[0] == "playlist" and args[1] == "pause" and len(args) == 2:
+            await pause(ctx, server_id)
+        # voice_channel playlist resume
+        elif args[0] == "playlist" and args[1] == "resume" and len(args) == 2:
+            await resume(ctx, server_id)
+        # voice_channel playlist stop
+        elif args[0] == "playlist" and args[1] == "skip" and len(args) == 2:
+            await skip(ctx, server_id)
         else:
             await ctx.reply(f"`voice_channel` 명령어를 위한 제대로 된 인수가 주어지지 않은 것 같아요. (도움말 참조)")
 
