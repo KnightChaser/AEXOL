@@ -83,12 +83,7 @@ async def ping(ctx, *args):
 
 @bot.command(name = "time")
 async def get_time(ctx):
-    current_time = get_current_formatted_time_string()
-    embed = discord.Embed(title = "현재 시간", 
-                        description = f"{current_time}", 
-                        color = 0x00FFDB)
-    embed.set_footer(text = "한국표준시(KST) 기준")
-    await ctx.reply(embed = embed)
+    await send_current_formatted_time(ctx)
 
 
 @bot.command(name = "voice_channel")
