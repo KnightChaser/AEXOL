@@ -29,13 +29,13 @@ async def send_ping(ctx, target):
         # illegal input detected
         result = "illegal input for ping"
     finally:
-        # return result
         # just relay the value ctx to execute next function send_ping_result that uses Discord.py functions
         await send_ping_result(ctx, result)
 
 async def send_ping_result(ctx, result):
-    # ping_result = send_ping(args[0])
+
     ping_result = result
+    
     if ping_result == "illegal input for ping":
         # illegal input
         await ctx.reply(f"`ping` 명령어를 위한 인수가 적절하지 않은 것 같아요. (도움말 참조)")
