@@ -3,7 +3,6 @@ from discord.ext import commands
 from features import _available
 from features.get_time import *
 from features.help import *
-from features.play_music import *
 from features.send_ping import *
 from features.voice_channel import *
 import validators
@@ -75,23 +74,20 @@ async def voice_channel(ctx, *args):
         # voice_channel join
         if args[0] == "join" and len(args) == 1:
             # await voice.join_voice_channel(ctx)
-            await join_voice_channel(ctx)
+            await VoiceChannel.join_voice_channel(ctx)
         # voice_channel leave
         elif args[0] == "leave" and len(args) == 1:
-            await leave_voice_channel(ctx)
+            await VoiceChannel.leave_voice_channel(ctx)
         # voice_channel playlist add [youtube_url]
         elif args[0] == "playlist" and args[1] == "add" and validators.url(args[2]) and len(args) == 3:
             try:
                 requested_url = args[2]
-                await add_queue(ctx, server_id, requested_url)
-            # except IndexError:
-            #     # the bot doesn't seems to be connected
-            #     await ctx.reply("음성채널에 아직 있는 것 같지 않아요. 저를 음성채널에 먼저 들여보내 주세요!")
+                await voice_channel_playlist(ctx, server_id, "add_queue", requested_url)
             except:
                 await ctx.reply("올바른 요청 형식이 아니어서 오류가 발생한 것 같아요. (중복 재생 시도, 처리 오류, 인터넷 연결 불안정 / 도움말 참조)")
         # voice_channel playlist show
         elif args[0] == "playlist" and args[1] == "show" and len(args) == 2:
-            await show_queue(ctx, server_id)
+            await voice_channel_playlist(ctx, server_id, "show_queue")
         # voice_channel playlist delete [index]
         elif args[0] == "playlist" and args[1] == "delete" and len(args) == 3:
             index = args[2]
@@ -102,19 +98,22 @@ async def voice_channel(ctx, *args):
                     index = int(args[2])        # delete something (designate by index number of the list)
                 except ValueError:
                     return
-            await delete_element_in_queue(ctx, server_id, index, True)
+            # await delete_element_in_queue(ctx, server_id, index, True)
+            await voice_channel_playlist(ctx, server_id, "delete_queue", index)
         # voice_channel playlist play
         elif args[0] == "playlist" and args[1] == "play" and len(args) == 2:
-            await play_queue(ctx, server_id)
+            await voice_channel_playlist(ctx, server_id, "play_queue")
         # voice_channel playlist pause
         elif args[0] == "playlist" and args[1] == "pause" and len(args) == 2:
-            await pause(ctx, server_id)
+            await voice_channel_playlist(ctx, server_id, "pause_media")
         # voice_channel playlist resume
         elif args[0] == "playlist" and args[1] == "resume" and len(args) == 2:
-            await resume(ctx, server_id)
+            await voice_channel_playlist(ctx, server_id, "resume_media")
         # voice_channel playlist stop
         elif args[0] == "playlist" and args[1] == "skip" and len(args) == 2:
-            await skip(ctx, server_id)
+            await voice_channel_playlist(ctx, server_id, "skip_media")
+        elif args[0] == "playlist" and args[1] == "stop" and len(args) == 2:
+            await voice_channel_playlist(ctx, server_id, "stop_media")
         else:
             await ctx.reply(f"`voice_channel` 명령어를 위한 제대로 된 인수가 주어지지 않은 것 같아요. (도움말 참조)")
 
