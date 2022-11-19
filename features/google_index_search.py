@@ -4,6 +4,7 @@ import time
 import re
 import random
 import discord
+from . import convert_number_notation
 
 class GoogleParsingConst:
 
@@ -102,7 +103,7 @@ async def get_google_search_index(ctx, keyword):
     
     # all process has done successfully
     embed = discord.Embed(title = f"🔍 구글 검색 : `{result['search_keyword']}`", color = 0x00FFDB)
-    embed.add_field(name = "검색 통계", value = f"📟검색 결과 개수 : **{result['search_result']}**개\n⏲️검색 시간 : **{round(result['search_time'], 3)}초**", inline = False)
+    embed.add_field(name = "검색 통계", value = f"📟검색 결과 개수 : ≈ **{convert_number_notation.get_korean_number_amount(result['search_result'])}** 개\n⏲️검색 시간 : **{round(result['search_time'], 3)}초**", inline = False)
     
     index_show_text = ""
     for _seq in result['index']:
