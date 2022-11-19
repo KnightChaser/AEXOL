@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from features import _available
 from features.get_time import *
+from features.google_index_search import *
 from features.help import *
 from features.send_ping import *
 from features.voice_channel import *
@@ -45,6 +46,17 @@ async def change_status(ctx, *args):
 async def hello(ctx):
     await ctx.reply(f"반가워요! **{ctx.author.name}**님! 저는 **{bot.user}** 입니다!")
 
+
+@bot.command(name = "google")
+async def hello(ctx, *args):
+
+    if len(args) != 1 or args == "":
+        await ctx.reply("검색 키워드를 한 단어로 입력해주시고, 검색어에 공백이 있다면 `\"...\"` 형태로 검색어 양 끝에 따옴표를 넣어주세요. (ex. `\"Python 3\"`)")
+        return
+
+    await get_google_search_index(ctx, *args)
+
+
 @bot.command(name = "help")
 async def help(ctx, *args):
     await get_help(ctx, *args)
@@ -62,6 +74,7 @@ async def ping(ctx, *args):
 @bot.command(name = "time")
 async def get_time(ctx):
     await send_current_formatted_time(ctx)
+
 
 @bot.command(name = "voice_channel")
 async def voice_channel(ctx, *args):

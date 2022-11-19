@@ -9,6 +9,11 @@ supported_commands = {
         "usage"       : "axl! time",
         "privilege"   : "everyone"
     },
+    "google"            : {
+        "description" : "제시한 키워드에 대한 구글 검색을 수행하여 간단한 통계와 상위 검색 결과를 정리해서 가져옵니다. 키워드에 공백이 들어간 경우 `\"python 3\"`와 같이 양변에 따옴표를 통해 키워드를 감싸 검색할 수 있습니다.",
+        "usage"       : "axl! google [keyword]",
+        "privilege"   : "everyone"
+    },
     "hello"           : {
         "description" : "봇에게 인사를 시킵니다.",
         "usage"       : "axl! hello",
