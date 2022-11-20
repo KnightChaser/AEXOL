@@ -13,8 +13,13 @@ This is the 3rd official challenge to make sustainable and scalable Discord chat
 This bot supports features below currently
  - Alive check
  - Easily scalable `help` command feature
- - Get current time (I'll make more options for different time zones, not only the zone where the server is located)
+ - Get current time
  - Voice channel and live music playing with queue
  - Google index searching, sorting top results and related simple statistics
  - Authorization for specific commands
  - Exception catch
+
+Further plan
+ - Get current time with optional variable for different time zones
+ - Real-time cryptocurrencies information
+ - Google finance (stocks, indexes, news...)
