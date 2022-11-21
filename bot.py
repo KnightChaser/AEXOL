@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from features import _available
+from features.cryptocurrencies.get_crypto_market import get_crypto_info
 from features.get_time import *
 from features.google_index_search import *
 from features.help import *
@@ -41,6 +42,17 @@ async def change_status(ctx, *args):
                         description = f"봇({bot.user})를 성공적으로 **{available_status[request]}({request})** 상태로 전환했습니다.", 
                         color = 0x00FFDB)
     await ctx.reply(embed = embed)
+
+
+@bot.command(name = "crypto")
+async def get_cryptocurrency_market_info(ctx, *args):
+
+    if len(args) != 1 or args == "":
+        await ctx.reply("마켓 코드를 정확하게 입력해 주세요. `[통화]-[암호화폐]` 형태로 입력해주시면 됩니다. (ex. `KRW-BTC`, `BTC-ETH`)")
+        return
+
+    await get_crypto_info(ctx, *args)
+
 
 @bot.command(name = "hello")
 async def hello(ctx):

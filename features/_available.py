@@ -4,6 +4,25 @@ supported_commands = {
         "usage"       : "axl! change_status [online|offline|idle|do_not_disturb|invisible]",
         "privilege"   : "administrator"
     },
+    "crypto"          : {
+        "description" : "업비트(Upbit) 거래소의 암호화폐 시세와 최근 차트(3분봉 캔들차트 + 거래량)를 그려서 가져옵니다.",
+        "usage"       : "axl! crypto [market_code]",
+        "privilege"   : "everyone",
+        "detailed_descriptions" : {
+            0 : {
+                "title"     : "지원 항목",
+                "content"   : "업비트에 공개적으로 상장된 종목을 조회할 수 있으며, KRW Market과 BTC Market 모두 지원합니다. 그러나 BTC Market의 경우 단위 숫자가 너무 작은 경우 지수(exponents) 형태로 표현되거나 0으로 표기될 수 있습니다."
+            },
+            1 : {
+                "title"     : "지원되는 종목 확인하기",
+                "content"   : "`https://api.upbit.com/v1/market/all?isDetails=true`에서 JSON 형태로, 또는 업비트(Upbit) 거래소에서 확인해 볼 수 있습니다."
+            },
+            2 : {
+                "title"     : "종목 코드 작성",
+                "content"   : "업비트 API 표준을 사용합니다. `[fiat_currency]-[cryptocurrency]` 형태를 사용하면 되며, 예를 들어 KRW(원화)로 거래되는 BTC(비트코인)에 대해 조회하고 싶을때는 마켓 코드로 `KRW-BTC`를 사용하세요."
+            }
+        },
+    },
     "time"            : {
         "description" : "현재 시간을 초 단위로 알려줍니다. 단, 시간은 서버가 위치한 한국시(한국표준시, KST)를 기준으로 합니다.",
         "usage"       : "axl! time",

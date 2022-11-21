@@ -22,6 +22,9 @@ asset/token/token.txt
 
 #unnecessary
 features/__pycache__/
+features/cryptocurrencies/__pycache__/
+features/cryptocurrencies/figure/
+features/cryptocurrencies/*json
 log/
 legacy/
 *.exe
