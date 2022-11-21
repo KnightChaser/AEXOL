@@ -85,19 +85,19 @@ def get_crypto_ticker(markets:str):
     data = data[0]
 
     # set some visual emojis for Discord embed
-    if float(data['change_rate']) * 100 >= 40:
+    if float(data['signed_change_rate']) * 100 >= 40:
         change_emoji = '🔥'
         change_comment = '폭등'
-    elif float(data['change_rate']) * 100 >= 20:
+    elif float(data['signed_change_rate']) * 100 >= 20:
         change_emoji = '⏫'
         change_comment = '급등'
-    elif float(data['change_rate']) * 100 > 0:
+    elif float(data['signed_change_rate']) * 100 > 0:
         change_emoji = '🔼'
         change_comment = '상승'
-    elif float(data['change_rate']) == 0 or data['change'] == "EVEN":      # for potential floating point issue, one more condition to clarify
+    elif float(data['signed_change_rate']) == 0 or data['change'] == "EVEN":      # for potential floating point issue, one more condition to clarify
         change_emoji = '⏸'
         change_comment = '보합'
-    elif float(data['change_rate']) * 100 >= -20:
+    elif float(data['signed_change_rate']) * 100 >= -20:
         change_emoji = '🔽'
         change_comment = '하락'
     else:
