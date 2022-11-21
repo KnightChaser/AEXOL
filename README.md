@@ -19,7 +19,8 @@ This bot supports features below currently
  - Authorization for specific commands
  - Exception catch
 
-Further plan
- - Get current time with optional variable for different time zones
- - Real-time cryptocurrencies information
- - Google finance (stocks, indexes, news...)
+
+Improvement projects
+ - [ ] Get current time with optional variable for different time zones
+ - [x] Real-time cryptocurrencies information (first commit)
+ - [ ] Google finance (stocks, indexes, news...)
