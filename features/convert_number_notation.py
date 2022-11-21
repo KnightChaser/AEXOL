@@ -24,3 +24,24 @@ def get_korean_number_amount(number:int):
 
     korean_number_string = korean_number_string.replace("일", "")
     return korean_number_string
+
+def approx_SI_prefix_formatter(number):
+
+
+    number_notation = {
+
+        "T" : 1000000000000,
+        "B" : 1000000000,
+        "M" : 1000000,
+        "K" : 1000
+    }
+
+    SI_number_string = ""
+
+    for key, values in number_notation.items():
+        if int(number) / values >= 1:
+            SI_number_string = f"{round(int(number) / values, 2)}{key}"
+            return SI_number_string
+            
+
+    return number       # No need to add prefix
