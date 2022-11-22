@@ -24,3 +24,4 @@ Improvement projects
  - [ ] Get current time with optional variable for different time zones
  - [x] Real-time cryptocurrencies information (first commit)
  - [ ] Google finance (stocks, indexes, news...)
+ - [ ] Enhance the automatic execution shell script (`run.sh`) to find lacked package dependencies
