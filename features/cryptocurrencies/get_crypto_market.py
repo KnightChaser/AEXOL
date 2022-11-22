@@ -5,9 +5,8 @@ import time
 import json
 import os
 import ast
-import io
 import discord
-
+import matplotlib.font_manager as fm
 
 # number formatter for chart, enhances visibilities
 def add_comma_formatter(number, pos):
@@ -45,7 +44,7 @@ def check_available_market_codes(markets:str):
         
     for _data in market_availability_dict:
         if _data["market"] == markets:
-            symbol = markets.replace('KRW-','').replace('BTC-','')
+            symbol = markets.replace('KRW-','').replace('BTC-','').replace('USDT-','')
 
             if "KRW-" in markets:
                 fiat_currency = "KRW"
@@ -53,6 +52,9 @@ def check_available_market_codes(markets:str):
             elif "BTC-" in markets:
                 fiat_currency = "BTC"
                 fiat_symbol = "₿"
+            elif "USDT-" in markets:
+                fiat_currency = "USDT"
+                fiat_symbol = "₮"
 
             result = {
                 "market_code"       : markets,
@@ -111,10 +113,10 @@ def get_crypto_ticker(markets:str):
 
     result = {
         'market'                : data['market'],
-        'opening_price'         : format(data['opening_price'], ','),
-        'high_price'            : format(data['high_price'], ','),
-        'low_price'             : format(data['low_price'], ','),
-        'trade_price'           : format(data['trade_price'], ','),
+        'opening_price'         : format(round(data['opening_price'], 6), ','),
+        'high_price'            : format(round(data['high_price'], 6), ','),
+        'low_price'             : format(round(data['low_price'], 6), ','),
+        'trade_price'           : format(round(data['trade_price'], 6), ','),
         'change'                : data['change'],
         'change_comment'        : change_comment,
         'change_emoji'          : change_emoji,
@@ -135,7 +137,7 @@ def get_crypto_candle_chart(markets:str, minutes:int):
     try:
 
         # retrive required recent candlestick informations
-        url = f"https://api.upbit.com/v1/candles/minutes/{minutes}?market={markets}&count=100"
+        url = f"https://api.upbit.com/v1/candles/minutes/{minutes}?market={markets}&count=150"
         headers = {"accept": "application/json"}
         response = requests.get(url, headers=headers)
         raw_json_data = response.text
@@ -161,6 +163,8 @@ def get_crypto_candle_chart(markets:str, minutes:int):
                                 volume = '#808080'
                             )
 
+        # custom font setting
+        fm.fontManager.addfont("asset/font/Consolas.ttf")
         rcpdict = { 'font.family' : ['Consolas'] }
 
         candle_chart_style = mplfinance.make_mpf_style(
@@ -182,7 +186,7 @@ def get_crypto_candle_chart(markets:str, minutes:int):
                         data,
                         type = "candle",
                         volume = True,
-                        title = f"\n\n\n\n\n\n\n\n{' ' * 60}{markets}",
+                        title = f"\n\n{markets}@UpBit ({minutes}minutes/candle)",
                         style = candle_chart_style,
                         ylabel = "Price",
                         ylabel_lower = "Volume (KRW)",
@@ -235,14 +239,18 @@ async def get_crypto_info(ctx, markets:str):
     # embed.add_field(name = "영문 이름", value = f"{market_availability['english_name']}", inline = True)
     embed.add_field(name = "거래 통화", value = f"**{fiat_currency}**({fiat_symbol})", inline = True)
 
+    if market_availability['market_warning'] == "NONE":
+        market_warning_sign = "해당사항 없음 ✅"
+    else:
+        market_warning_sign = "투자 주의 🚧"
+    embed.add_field(name = "유의 종목 여부", value = f"{market_warning_sign}", inline = True)
+
     embed.add_field(name = "현재 가격(거래가)", value = f"**{fiat_symbol} {market_ticker_information['trade_price']}**", inline = True)
+    embed.add_field(name = "24시간 변동", value = f"**{fiat_symbol} {market_ticker_information['change_rate_price']}** ({market_ticker_information['change_rate_percent']} % {market_ticker_information['change_emoji']})", inline = True)
     embed.add_field(name = "52주 고저", value = f"""고가 : {fiat_symbol} {market_ticker_information['highest_52_week_price']}
                                                     저가 : {fiat_symbol} {market_ticker_information['lowest_52_week_price']}""")
-    embed.add_field(name = "24시간 가격 변동폭", value = f"""시가 : {fiat_symbol} {market_ticker_information['opening_price']}
-                                                            고가 : {fiat_symbol} {market_ticker_information['high_price']}
-                                                            저가 : {fiat_symbol} {market_ticker_information['low_price']}""", inline = True)
-    embed.add_field(name = "24시간 변동", value = f"**{fiat_symbol} {market_ticker_information['change_rate_price']}**\n{market_ticker_information['change_rate_percent']} % {market_ticker_information['change_emoji']}", inline = True)
-    embed.add_field(name = "24시간 거래량", value = f"≈ {fiat_symbol} {market_ticker_information['acc_trade_price_24h']} (≈ {market_ticker_information['acc_trade_volume_24h']} {market_symbol})", inline = False)
+    embed.add_field(name = "24시간 가격 변동폭(시가/고가/저가)", value = f"{fiat_symbol} {market_ticker_information['opening_price']} / {fiat_symbol} {market_ticker_information['high_price']} / {fiat_symbol} {market_ticker_information['low_price']}", inline = False)
+    embed.add_field(name = "24시간 거래량", value = f"**{fiat_symbol}** {market_ticker_information['acc_trade_price_24h']} **≈** {market_ticker_information['acc_trade_volume_24h']} **{market_symbol}**", inline = False)
 
     candle_chart_picture = discord.File(market_candle_chart, filename = "candlechart.png")
     embed.set_image(url = f"attachment://candlechart.png")
