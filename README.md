@@ -29,6 +29,7 @@ Improvement projects
      - [x] Customize candle chart like font
      - [x] Support KRW, BTC, USDT(Tether) market
      - [ ] User-input-driven candle chart customization (Candle qty, Period per candle)
+     - [ ] Ranking by 24hr trade volume or even/loss percentage
  - [ ] Google finance (stocks, indexes, news...)
      - [ ] Major stocks
      - [ ] Major indexes
