@@ -22,6 +22,17 @@ This bot supports features below currently
 
 Improvement projects
  - [ ] Get current time with optional variable for different time zones
- - [x] Real-time cryptocurrencies information (first commit)
+ - [x] Real-time cryptocurrencies information (with Upbit public API)
+     - [x] Get basic ticker information
+     - [x] Get basic candle chart
+     - [x] Pretty Embed
+     - [x] Customize candle chart like font
+     - [x] Support KRW, BTC, USDT(Tether) market
+     - [ ] User-input-driven candle chart customization (Candle qty, Period per candle)
  - [ ] Google finance (stocks, indexes, news...)
+     - [ ] Major stocks
+     - [ ] Major indexes
+     - [ ] Major news
  - [ ] Enhance the automatic execution shell script (`run.sh`) to find lacked package dependencies
+ - [ ] Customizing prefix (default : `axl! _commands_ *args`)
+     - [ ] Save as a database, with MySQL or SQLite
