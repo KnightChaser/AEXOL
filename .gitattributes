@@ -1,2 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Fixes languages listing on GitHub
+/*.md linguist-detectable
