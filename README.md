@@ -14,6 +14,7 @@ This bot supports features below currently
  - Alive check
  - Easily scalable `help` command feature
  - Get current time
+ - ping to the specified target
  - Voice channel and live music playing with queue
  - Google index searching, sorting top results and related simple statistics
  - Authorization for specific commands
@@ -23,13 +24,14 @@ This bot supports features below currently
 Improvement projects
  - [ ] Get current time with optional variable for different time zones
  - [x] Real-time cryptocurrencies information (with Upbit public API)
+     - [ ] Check market code availability
      - [x] Get basic ticker information
      - [x] Get basic candle chart
      - [x] Pretty Embed
      - [x] Customize candle chart like font
      - [x] Support KRW, BTC, USDT(Tether) market
      - [ ] User-input-driven candle chart customization (Candle qty, Period per candle)
-     - [ ] Ranking by 24hr trade volume or even/loss percentage
+     - [ ] Sort cryptocurrencies list (trade price, trade volume, change rate, etc...)
  - [ ] Google finance (stocks, indexes, news...)
      - [ ] Major stocks
      - [ ] Major indexes
