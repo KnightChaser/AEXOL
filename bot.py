@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from features import _available
 from features.cryptocurrencies.get_crypto_market import *
+from features.credit import *
 from features.get_time import *
 from features.google_index_search import *
 from features.help import *
@@ -43,6 +44,9 @@ async def change_status(ctx, *args):
                         color = 0x00FFDB)
     await ctx.reply(embed = embed)
 
+@bot.command(name = "credit")
+async def show_credit(ctx):
+    await display_owner_credit(ctx)
 
 @bot.command(name = "crypto")
 async def get_cryptocurrency_market_info(ctx, *args):

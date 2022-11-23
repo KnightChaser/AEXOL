@@ -5,6 +5,12 @@ supported_commands = {
         "example"     : "axl! change_status online",
         "privilege"   : "administrator"
     },
+    "credit"          : {
+        "description" : "봇의 크레딧 정보를 보여줍니다.",
+        "usage"       : "axl! credit",
+        "example"     : "axl! credit",
+        "privilege"   : "everyone"
+    },
     "crypto"          : {
         "description" : "업비트(Upbit) 거래소의 암호화폐 시세와 최근 차트(3분봉 캔들차트 + 거래량) 또는 원하는 기준에 따라 정렬된 상위 통계를 실시간으로 제공합니다.",
         "usage"       : "axl! crypto [market|rank]\n"
