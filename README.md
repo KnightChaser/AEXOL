@@ -40,3 +40,4 @@ Improvement projects
  - [ ] Live weather and forecasts
  - [ ] Customizing prefix (default : `axl! _commands_ *args`)
      - [ ] Save as a database, with MySQL or SQLite
+ - [x] Provides detailed guides (`axl! help [args]`)
