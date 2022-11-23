@@ -301,7 +301,7 @@ async def get_crypto_ranking_by(ctx, market:str, criteria:str, order:str):
     }
 
     sorted_func_order = {
-        "aescending"  : False,
+        "ascending"  : False,
         "descending" : True
     }
 
