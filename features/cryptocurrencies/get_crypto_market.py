@@ -7,6 +7,7 @@ import os
 import ast
 import discord
 import matplotlib.font_manager as fm
+from table2ascii import *
 
 # number formatter for chart, enhances visibilities
 def add_comma_formatter(number, pos):
@@ -256,7 +257,122 @@ async def get_crypto_info(ctx, markets:str):
     embed.set_image(url = f"attachment://candlechart.png")
     embed.set_footer(text = f"Upbit 제공 | 업데이트 시각 : {market_ticker_information['trade_kst_format']}")
 
-    # await ctx.reply(embed = embed)
     await ctx.channel.send(file = candle_chart_picture, embed = embed)        
 
-# print(get_crypto_info("KRW-IQ"))
+
+# get sorted crypto market information by a specific criteria
+# def get_crypto_ranking_by(criteria:str, market:str, order:str, rank_cut:int):
+async def get_crypto_ranking_by(ctx, market:str, criteria:str, order:str):
+
+    # manually set
+    rank_cut = 20
+
+    # to adjust upbit API spec
+    if criteria == "change_price":
+        criteria = "signed_change_price"
+    elif criteria == "change_rate":
+        criteria = "signed_change_rate"
+
+    available_criterias_to_sort = {
+        "opening_price"         : "시가",
+        "high_price"            : "고가",
+        "low_price"             : "저가",
+        "trade_price"           : "현재가",
+        "prev_closing_price"    : "전일 종가 (UTC 0시 기준)",
+        "signed_change_price"   : "시세 변화액 (24시간)",
+        "signed_change_rate"    : "시세 변화율 (24시간)",
+        "acc_trade_price"       : "누적 거래대금 (UTC 0시 기준)",
+        "acc_trade_price_24h"   : "누적 거래대금 (24시간)"
+    }
+
+    available_market_symbols = {
+        "KRW" : {
+            "fiat_currency" : "KRW",
+            "fiat_symbol" : "₩"
+        },
+        "BTC" : {
+            "fiat_currency" : "BTC",
+            "fiat_symbol" : "₿"
+        },
+        "USDT" : {
+            "fiat_currency" : "USDT",
+            "fiat_symbol" : "₮"
+        }
+    }
+
+    sorted_func_order = {
+        "aescending"  : False,
+        "descending" : True
+    }
+
+    headers = {"accept" : "application/json"}
+
+    if criteria not in available_criterias_to_sort:
+        raise("Unavailable criteria")
+
+    if market not in available_market_symbols:
+        raise("Unavailable market")
+
+    if order not in sorted_func_order:
+        raise("Unavailable sort function order direction")
+
+    ### Just get market code ### 
+    market_code_api_url = "https://api.upbit.com/v1/market/all?isDetails=false"
+    market_code_raw_data = json.loads(requests.get(market_code_api_url, headers = headers).text)
+    
+    ticker_request_url = "https://api.upbit.com/v1/ticker?markets="
+    for _data in market_code_raw_data:
+        if f"{market}-" in _data['market']:
+            ticker_request_url += f"{_data['market']},"
+    ticker_request_url = ticker_request_url[:-1]                      # delete unnecessary ","
+    ###
+
+    ticker_raw_data = json.loads(requests.get(url = ticker_request_url, headers = headers).text)
+    
+    ticker_ranking_data = {}
+
+    for _data in ticker_raw_data:
+        ticker_ranking_data.setdefault(_data["market"])
+        ticker_ranking_data[_data["market"]] = {
+            criteria : _data[criteria]
+        }
+
+    # print(ticker_ranking_data.items())
+    ticker_ranking_data = sorted(ticker_ranking_data.items(), key = lambda x: x[1][criteria], reverse = sorted_func_order[order])
+
+    # pack the result to make the table as a result
+    _seq = 1
+    result_table_body_list = []
+    for _data in ticker_ranking_data:
+        if _seq > rank_cut:
+            break
+
+        # appropriate rounding and commas for numeric data
+        numeric_data = _data[1][criteria]
+        market_symbol = _data[0].replace("KRW-","").replace("BTC-","").replace("USDT-","")
+        if criteria in ["acc_trade_price", "acc_trade_price_24h"]:
+            numeric_data = f"{available_market_symbols[market]['fiat_symbol']} {format(round(numeric_data), ',')}"
+        elif criteria == "signed_change_rate":
+            numeric_data *= 100
+            numeric_data = f"{format(round(numeric_data, 2), ',.2f')} %"
+        elif criteria in ["opening_price", "high_price", "low_price", "trade_price", "prev_closing_price", "change_price"]:
+            numeric_data = f"{available_market_symbols[market]['fiat_symbol']} {format(numeric_data, ',')}"
+
+        result_table_body_list.append([f"{_seq}", f"{market_symbol}", f"{numeric_data}"])
+        _seq += 1
+
+    table_output = table2ascii(
+        header              = ["#", "market", "value"],
+        body                = result_table_body_list,
+        style               = PresetStyle.ascii_compact,
+        first_col_heading   = True,
+        cell_padding        = 3,
+        alignments          = [Alignment.RIGHT] + [Alignment.CENTER] + [Alignment.RIGHT] 
+    )
+
+                    #  |--- coin icon
+    message_output = f"🪙 **암호화폐 통계** | **마켓** : {market}({available_market_symbols[market]['fiat_symbol']}) | **정렬** : {available_criterias_to_sort[criteria]}"
+    message_output += f"```\n{table_output}\n```"      # for discord messaging
+    message_output += "자료제공 : 업비트"
+
+    await ctx.reply(message_output)

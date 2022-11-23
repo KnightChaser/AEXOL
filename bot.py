@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from features import _available
-from features.cryptocurrencies.get_crypto_market import get_crypto_info
+from features.cryptocurrencies.get_crypto_market import *
 from features.get_time import *
 from features.google_index_search import *
 from features.help import *
@@ -47,11 +47,28 @@ async def change_status(ctx, *args):
 @bot.command(name = "crypto")
 async def get_cryptocurrency_market_info(ctx, *args):
 
-    if len(args) != 1 or args == "":
-        await ctx.reply("마켓 코드를 정확하게 입력해 주세요. `[통화]-[암호화폐]` 형태로 입력해주시면 됩니다. (ex. `KRW-BTC`, `BTC-ETH`)")
-        return
+    # if len(args) != 1 or args == "":
+    #     await ctx.reply("마켓 코드를 정확하게 입력해 주세요. `[통화]-[암호화폐]` 형태로 입력해주시면 됩니다. (ex. `KRW-BTC`, `BTC-ETH`)")
+    #     return
 
-    await get_crypto_info(ctx, *args)
+    # await get_crypto_info(ctx, *args)
+
+    if len(args) == 2 and args[0] == "market":
+        try:
+            crypto_market_code = args[1]
+            await get_crypto_info(ctx, crypto_market_code)
+        except:
+            await ctx.reply("마켓 코드를 정확하게 입력해 주세요. 자세한 내용은 도움말을 참조하세요. (`axl! help crypto`)")
+    elif len(args) == 4 and args[0] == "rank":
+        try:
+            crypto_market_fiat      = args[1]
+            sort_criteria           = args[2]
+            sort_order_direction    = args[3]
+            await get_crypto_ranking_by(ctx, crypto_market_fiat, sort_criteria, sort_order_direction)
+        except:
+            await ctx.reply("정보를 처리하는데 실패했습니다. 매개변수가 잘못된 것 같습니다. 자세한 내용은 도움말을 참조하세요. (`axl! help crypto`)")
+    else:
+        await ctx.reply("올바른 인자가 아닙니다. 자세한 내용은 도움말을 참조하세요. (`axl! help crypto`)")
 
 
 @bot.command(name = "hello")
