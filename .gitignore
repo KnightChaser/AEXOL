@@ -24,7 +24,9 @@ asset/token/token.txt
 features/__pycache__/
 features/cryptocurrencies/__pycache__/
 features/cryptocurrencies/figure/
-features/cryptocurrencies/*json
+features/cryptocurrencies/*.json
+features/finance/__pycache__/
+features/finance/indexes/*.pickle
 log/
 legacy/
 *.exe

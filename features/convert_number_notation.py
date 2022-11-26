@@ -22,9 +22,9 @@ def get_korean_number_amount(number:int):
 
     number_reading = {k: v for k, v in number_reading.items() if v != 0}
     for key, values in number_reading.items():
-        korean_number_string += f"{values}{key}"
+        korean_number_string += f"{values}{key} "
 
-    korean_number_string = korean_number_string.replace("일", "")
+    korean_number_string = korean_number_string.replace("일", "").rstrip()
 
     # for negative function
     if original_number < 0:

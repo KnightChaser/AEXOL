@@ -38,6 +38,18 @@ supported_commands = {
             }
         },
     },
+    "finance"         : {
+        "description" : "금융 정보를 가져옵니다.",
+        "usage"       : "axl! finance [category]",
+        "example"     : "axl! finance index",
+        "privilege"   : "everyone",
+        "detailed_descriptions" : {
+            0 : {
+                "title"     : "카테고리 설명",
+                "content"   : "`finance` : 국내 주요 인덱스 정보를 정리해 가져옵니다."
+            }
+        }
+    },
     "time"            : {
         "description" : "현재 시간을 초 단위로 알려줍니다. 단, 시간은 서버가 위치한 한국시(한국표준시, KST)를 기준으로 합니다.",
         "usage"       : "axl! time",

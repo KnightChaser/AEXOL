@@ -7,6 +7,7 @@ from features.get_time import *
 from features.google_index_search import *
 from features.help import *
 from features.send_ping import *
+from features.finance.indexes import *
 from features.voice_channel import *
 import validators
 
@@ -103,6 +104,13 @@ async def ping(ctx, *args):
     else:
         await send_ping(ctx, args[0])
         
+
+@bot.command(name = "finance")
+async def finance(ctx, *args):
+    if len(args) == 1 and args[0] == "index":
+        view = IndexInfoMenu(ctx = ctx)
+        await ctx.reply(view = view)
+
 
 @bot.command(name = "time")
 async def get_time(ctx):
