@@ -23,6 +23,12 @@ def get_korean_number_amount(number:int):
         korean_number_string += f"{values}{key}"
 
     korean_number_string = korean_number_string.replace("일", "")
+
+    # for negative function
+    if number < 0:
+        korean_number_string = korean_number_string.replace("-", "")
+        korean_number_string = "-" + korean_number_string
+
     return korean_number_string
 
 def approx_SI_prefix_formatter(number):
