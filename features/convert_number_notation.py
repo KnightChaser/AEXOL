@@ -10,6 +10,8 @@ def get_korean_number_amount(number:int):
         "일" : 1
     }    
 
+    original_number = number
+
     number_reading = {}
 
     for key, values in number_notation.items():
@@ -25,7 +27,7 @@ def get_korean_number_amount(number:int):
     korean_number_string = korean_number_string.replace("일", "")
 
     # for negative function
-    if number < 0:
+    if original_number < 0:
         korean_number_string = korean_number_string.replace("-", "")
         korean_number_string = "-" + korean_number_string
 
