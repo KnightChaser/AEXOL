@@ -174,7 +174,7 @@ async def show_index_statistics(index_name:str):
 
 class IndexInfoMenu(discord.ui.View):
     def __init__(self, ctx):
-        super().__init__()
+        super().__init__(timeout = 60)
         self.value = None
         self.ctx = ctx
 
@@ -192,3 +192,10 @@ class IndexInfoMenu(discord.ui.View):
     async def KPI200(self, interaction: discord.Interaction, button: discord.ui.Button):
         embed = await show_index_statistics(index_name ="KPI200")
         await interaction.response.edit_message(embed = embed)
+
+    async def on_timeout(self) -> None:
+        for item in self.children:
+            item.disabled = True
+            
+        await self.message.edit(view = self)
+        await self.ctx.send("_1분 동안 아무런 사용이 없어 조회창을 종료합니다._")

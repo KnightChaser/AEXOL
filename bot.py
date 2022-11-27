@@ -109,7 +109,7 @@ async def ping(ctx, *args):
 async def finance(ctx, *args):
     if len(args) == 1 and args[0] == "index":
         view = IndexInfoMenu(ctx = ctx)
-        await ctx.reply(view = view)
+        view.message = await ctx.reply(view = view)
 
 
 @bot.command(name = "time")
