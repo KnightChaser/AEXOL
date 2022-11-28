@@ -138,7 +138,7 @@ class get_kr_finance_information:
             "daily_low_value"       : int(daily_index_stats[0]["datas"][data_dict_index]["lv"]) / 100,
             "acc_trading_volume"    : int(daily_index_stats[0]["datas"][data_dict_index]["aq"]) * 1000,
             "acc_trading_price"     : int(daily_index_stats[0]["datas"][data_dict_index]["aa"]) * 1000000,  # 1 = million won,
-            "graph_image_url"      : f"https://ssl.pstatic.net/imgfinance/chart/main/{index}.png"
+            "graph_image_url"      : f"https://ssl.pstatic.net/imgfinance/chart/main/{index}.png?sidcode={time.time() * 1000}"  # live chart
         }
 
         if index in ["KOSPI", "KOSDAQ"]:
