@@ -21,13 +21,8 @@ async def on_ready():
 
 ##############################################################################
 
-
 # @bot.slash_command(name = "hello", description = "인사하기")
 # async def hello(ctx):
 #     await ctx.respond(f"{ctx.author.name} 님 반가워요! 저는 AEXOL|HYPER 입니다!")
-
-# @bot.slash_command(name = "get_time", description = "현재 시간을 알아봅니다.")
-# async def get_time(ctx):
-#     await send_current_time(ctx)
     
 bot.run(TOKEN)
