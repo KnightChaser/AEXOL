@@ -1,7 +1,7 @@
-import time
 import discord
+import time
 
-async def send_current_formatted_time(ctx):
+async def send_current_time(ctx):
     
     tm = time.localtime(time.time())
 
@@ -19,4 +19,4 @@ async def send_current_formatted_time(ctx):
                         color = 0x00FFDB)
     embed.set_footer(text = "한국표준시(KST) 기준")
     
-    await ctx.reply(embed = embed)
+    await ctx.respond(embed = embed)
