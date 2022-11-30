@@ -1,6 +1,8 @@
 import discord
+from discord import Option
 from discord.ext import commands
 import time
+import calendar
 
 class Time(commands.Cog):
 
@@ -29,6 +31,19 @@ class Time(commands.Cog):
         embed.set_footer(text = "한국표준시(KST) 기준")
         
         await ctx.respond(embed = embed)
+
+    @time.command(description = "한 달 달력 보기")
+    async def calender_month(self,
+                             ctx,
+                             year: Option(int, "년도"),
+                             month: Option(int, "달")):
+        if 0 <= year <= 1000000000000 and 1 <= month <= 12:
+            embed = discord.Embed(title = "📅 달력", color = 0x00FFDB)
+            embed.add_field(name = f"{year}**년** {month}**월**", value = f"```\n{calendar.month(year, month)}\n```")
+            await ctx.respond(embed = embed)
+        else:
+            # wrong year/month input
+            await ctx.respond(f"유효한 시간(년/월)을 입력해주세요. 년도는 `0` ~ `1000000000000`, 월은 `0` ~ `12` 범위의 정수만 지원합니다.")
 
 def setup(bot):
     bot.add_cog(Time(bot))
