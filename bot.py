@@ -1,6 +1,5 @@
 import os
 import discord
-from features.get_time import *
 
 #############################################################################
 
