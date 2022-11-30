@@ -10,11 +10,12 @@ A light **Discord bot with simple useful features** that is intended to run in 2
 
 This is the 3rd official challenge to make sustainable and scalable Discord chatbot with Python.
 
+**Due to this bot's transition to the slash command system, currently this project is being processed on the branch(pycord-switch). The developer is expecting the user experience and interactive part will be improved considerably after the branch project.**
 
 ### 📋 Projects
 
- - [ ] (★)Turn from prefix command system to slash(`/`) command system with user-guiding (Discord.py 2)
- - [ ] (★)Employ buttons, selection bars or input forms **entirely** to make the bot easier (Discord.py 2)
+ - [ ] (★)Turn from prefix command system to slash(`/`) command system with user-guiding (~~`Discord.py 2`~~ → `pycord 2`)
+ - [ ] (★)Employ buttons, selection bars or input forms **entirely** to make the bot easier (~~`Discord.py 2`~~ → `pycord 2`)
  - [x] Basic features
      - [x] Alive check (hello)
      - [x] Exception check
