@@ -1,10 +1,33 @@
+import discord
+from discord import Option
+from discord.ext import commands
 import requests
 from bs4 import BeautifulSoup
 import time
 import re
 import random
-import discord
-from . import convert_number_notation
+from components.convert_number_notations import ConvertNumberNotations as convert_number_notations
+
+class Google(commands.Cog):
+
+    def __init__(self, bot):
+        self.bot = bot
+
+    google = discord.SlashCommandGroup(name = "google", description = "구글 검색")
+
+    @google.command(description = "인덱스 검색(빠르게 찾기)")
+    async def index(self,
+                    ctx,
+                    search_word: Option(str, "검색어")):
+
+        result_as_embed = await get_google_search_index(ctx = ctx, keyword = search_word)
+        await ctx.respond(embed = result_as_embed)
+
+
+def setup(bot):
+    bot.add_cog(Google(bot))
+
+#########################################################################
 
 class GoogleParsingConst:
 
@@ -40,7 +63,7 @@ def process_google_search_index(keyword):
 
     try:
         url = f"https://www.google.com/search?q={keyword}"
-        headers = {"user-agent" : random.choice(GoogleParsingConst.user_agent_string_list)}
+        headers = {"user-agent" : random.choice(GoogleParsingConst.user_agent_string_list) }
         res = requests.get(url, headers = headers)
         soup = BeautifulSoup(res.text, 'html.parser')
     except Exception as e:
@@ -94,17 +117,16 @@ def process_google_search_index(keyword):
 
 async def get_google_search_index(ctx, keyword):
 
-
     result = process_google_search_index(keyword)
 
     if type(result) is tuple:
         await ctx.reply(f"검색 처리 과정 중에 에러가 발생한 것 같아요. ...`{result[1]}`")
         return
-    
+
     # all process has done successfully
     embed = discord.Embed(title = f"🔍 구글 검색 : `{result['search_keyword']}`", color = 0x00FFDB)
-    embed.add_field(name = "검색 통계", value = f"📟검색 결과 개수 : ≈ **{convert_number_notation.get_korean_number_amount(result['search_result'])}** 개\n⏲️검색 시간 : **{round(result['search_time'], 3)}초**", inline = False)
-    
+    embed.add_field(name = "검색 통계", value = f"📟검색 결과 개수 : ≈ **{convert_number_notations.get_korean_number_amount(result['search_result'])}** 개\n⏲️검색 시간 : **{round(result['search_time'], 3)}초**", inline = False)
+
     index_show_text = ""
     for _seq in result['index']:
         _data = result['index'][_seq]
@@ -120,4 +142,4 @@ async def get_google_search_index(ctx, keyword):
 
     embed.add_field(name = "상위 검색 결과", value = f"{index_show_text}")
     embed.set_footer(text = f"프로세스 처리 시간 : {round(result['processing_time'], 3)}초 | 가능한 최대 상위 10개 결과만 보여집니다.")
-    await ctx.reply(embed = embed)
+    return embed
