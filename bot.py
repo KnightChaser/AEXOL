@@ -10,9 +10,11 @@ bot = discord.Bot()
 with open("./asset/token/token.txt") as token_file:
     TOKEN = token_file.read()
 
+_cogs_filename_exclusion = ['components']
 for _cogs_filename in os.listdir("./cogs"):
-    cog_name = _cogs_filename.split(".")[0]
-    bot.load_extension(f"cogs.{cog_name}")
+    if _cogs_filename not in _cogs_filename_exclusion:
+        cog_name = _cogs_filename.split(".")[0]
+        bot.load_extension(f"cogs.{cog_name}")
 
 @bot.event
 async def on_ready():
