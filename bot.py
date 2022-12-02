@@ -11,6 +11,7 @@ with open("./asset/token/token.txt") as token_file:
     TOKEN = token_file.read()
 
 _cogs_filename_exclusion = ['components']
+
 for _cogs_filename in os.listdir("./cogs"):
     if _cogs_filename not in _cogs_filename_exclusion:
         cog_name = _cogs_filename.split(".")[0]

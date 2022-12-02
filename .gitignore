@@ -1,2 +1,9 @@
 # for securing private information
 asset/token/token.txt
+
+# No need to include to the Github commit
+cogs/__pycache__/
+
+components/__pycache__
+components/finance/__pycache__
+components/finance/data/crypto
